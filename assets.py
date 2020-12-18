@@ -71,14 +71,13 @@ class TNext(pygame.sprite.Sprite):
         self.image = pygame.image.load(os.path.join(IMG_FOLDER,"T_BLOCK.png")).convert()
         self.image.set_colorkey((255,255,255))
         self.rect = self.image.get_rect()
-        self.rect.midtop = (WINDOW_WIDTH - WINDOW_WIDTH/2.82 - 1, WINDOW_HEIGHT/5)
+
 class ONext(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(os.path.join(IMG_FOLDER,"O_BLOCK.png")).convert()
         self.image.set_colorkey((255,255,255))
         self.rect = self.image.get_rect()
-        self.rect.midtop = (WINDOW_WIDTH - WINDOW_WIDTH/2.82 - 1, WINDOW_HEIGHT/5)
 class INext(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -139,7 +138,7 @@ class StartScreen(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = ((WINDOW_WIDTH/2 - 5, WINDOW_HEIGHT/2 - 10))
 
-class All_Sprites():
+class AllSprites():
     def __init__(self):
         self.blank_block = BlankBlock()
         self.blue_block = BlueBlock()
@@ -162,3 +161,25 @@ class All_Sprites():
         self.board_border = BoardBorder()
         self.pause_screen = PauseScreen()
         self.start_screen = StartScreen()
+
+class AllAudio():
+    def __init__(self):
+        pygame.mixer.init()
+        pygame.mixer.music.load(THEME)
+        pygame.mixer.music.set_volume(0.1)
+
+        self.spin_sound = pygame.mixer.Sound(os.path.join(AUDIO_FOLDER,"spin.ogg"))
+        self.spin_sound.set_volume(0.15)
+        
+        self.line_clear_sound = pygame.mixer.Sound(os.path.join(AUDIO_FOLDER,"clear.ogg"))
+        self.line_clear_sound.set_volume(0.3)
+
+        self.pause_sound = pygame.mixer.Sound(os.path.join(AUDIO_FOLDER,"pause.ogg"))
+        self.pause_sound.set_volume(0.15)
+
+        self.game_over_sound = pygame.mixer.Sound(os.path.join(AUDIO_FOLDER,"gameover.ogg"))
+        self.game_over_sound.set_volume(0.15)
+
+        self.hard_drop_sound = pygame.mixer.Sound(os.path.join(AUDIO_FOLDER,"harddrop.ogg"))
+        self.hard_drop_sound.set_volume(0.15)
+        

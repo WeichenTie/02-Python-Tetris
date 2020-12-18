@@ -8,23 +8,33 @@ class Board():
         self.board = [[[0, False] for col in range(WIDTH)] for row in range(HEIGHT)]
 
         self.has_piece = False
-        self.piece = None
         self.tetrimino_types = (Tetrimino_T, Tetrimino_O, Tetrimino_Z, Tetrimino_S, Tetrimino_I, Tetrimino_L, Tetrimino_J)
-        self.next_piece = random.choice(self.tetrimino_types)
+        
+        self.piece = None
+        self.queued_piece1 = random.choice(self.tetrimino_types)
+        self.queued_piece2 = random.choice(self.tetrimino_types)
+        self.queued_piece3 = random.choice(self.tetrimino_types)
+        self.queued_piece4 = random.choice(self.tetrimino_types)
 
         self.rows_cleared = []
         self.rows_cleared_number = []
         self.score = 0
         self.level = 1
 
+        self.held_piece = None
+
     def add_tetrimino(self):
-        spawn = self.next_piece
+        spawn = self.queued_piece1
         lose = False
         for pos in spawn.orig_pos:
             if self.board[pos[0]][pos[1]] != [0, False]:
                 lose = True
         self.piece = spawn(self)
-        self.next_piece = self.get_next_tetrimino()
+        
+        self.queued_piece1 = self.queued_piece2
+        self.queued_piece2 = self.queued_piece3
+        self.queued_piece3 = self.queued_piece4
+        self.queued_piece4 = self.get_next_tetrimino()
         return not lose
         
 
@@ -83,6 +93,19 @@ class Board():
                         return True
         return False
     
+    def hold_tetrimino(self):
+        for pos in self.piece.position:
+            self.board[pos[0]][pos[1]] = [0, False]
+        if self.held_piece is None:
+            self.held_piece = self.piece
+            self.add_tetrimino()
+            return
+        else:
+            temp = self.held_piece
+            self.held_piece = self.piece
+            temp.__init__(self)
+            self.piece = temp
+
     def clear_lines(self):
         line_cleared = False
         for row in range(HEIGHT):

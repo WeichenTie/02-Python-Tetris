@@ -18,7 +18,7 @@ class Game():
     TRANSPARENT = 0
     OPAQUE = 255
 
-    FPS = 240
+    FPS = 300
     def __init__(self):
         pygame.init()
         
@@ -28,16 +28,12 @@ class Game():
         self.rect = self.image.get_rect()
         
         self.clock = pygame.time.Clock()
-        pygame.key.set_repeat(170,50)
+        pygame.key.set_repeat(160,50)
 
-        pygame.mixer.init()
-        pygame.mixer.music.load(THEME)
-        pygame.mixer.music.set_volume(0.1)
-        pygame.mixer.music.play(-1)
-        
         self.board = board.Board()
         
-        self.assets = assets.All_Sprites()
+        self.assets = assets.AllSprites()
+        self.audio = assets.AllAudio()
 
         self.game_speed = DEFAULT_SPEED
         self.last_update = pygame.time.get_ticks()
@@ -52,7 +48,9 @@ class Game():
 
         self.UP_up = True
         self.space_up = True
-
+        self.held_not_used = True
+        self.esc_up = True
+    
     def event(self):
         for ev in pygame.event.get():
             if ev.type == pygame.QUIT:
@@ -63,10 +61,16 @@ class Game():
                 elif ev.key == pygame.K_RIGHT:
                     self.board.shift_right()
                 elif ev.key == pygame.K_UP and self.UP_up:
-                    self.board.piece.rotate_ccw(self.board.board)
+                    if self.board.piece.rotate_ccw(self.board.board):
+                        self.audio.spin_sound.play()
                     self.UP_up = False
                 elif ev.key == pygame.K_DOWN:
                     self.board.shift_down()
+                    now = pygame.time.get_ticks()
+                    self.last_shift = now
+                elif ev.key == pygame.K_q and self.held_not_used:
+                    self.board.hold_tetrimino()
+                    self.held_not_used = False
                     now = pygame.time.get_ticks()
                     self.last_shift = now
                 elif ev.key == pygame.K_SPACE and self.space_up:
@@ -76,9 +80,12 @@ class Game():
                     for i in range(24):
                         if self.board.shift_down() is True:
                             break
-                elif ev.key == pygame.K_ESCAPE:
+                    self.audio.hard_drop_sound.play()
+                elif ev.key == pygame.K_ESCAPE and self.esc_up:
+                    self.audio.pause_sound.play()
                     self.waiting = True
                     self.pause = True
+                    self.esc_up = False
                 elif ev.key == pygame.K_r:
                     self.board = board.Board()
                     self.waiting = True
@@ -99,11 +106,16 @@ class Game():
                 self.board.shift_down()
                 self.last_shift = now
         if self.board.clear_lines():
+            self.audio.line_clear_sound.play()
             self.blinking_lines()
         if self.board.has_piece is False:
+            self.held_not_used = True
             if not self.board.add_tetrimino():
                 self.waiting = True
                 self.game_cont = False
+                pygame.mixer.music.stop()
+                self.audio.game_over_sound.play()
+                self.last_update = now
         self.board.level = int(self.board.score/10) + 1
         self.game_speed = DEFAULT_SPEED * (84/100)**(self.board.level - 1)
         #self.debug()
@@ -113,6 +125,7 @@ class Game():
         self.screen.blit(self.image, self.rect)
         draw.draw_board_border(self.screen, self.assets)
         draw.draw_next_tetrimino(self.screen, self.board, self.assets)
+        draw.draw_held_tetrimino(self.screen, self.board, self.assets)
         draw.draw_board(self.screen, self.board, self.assets)
         draw.draw_text(self.screen, pygame.font.match_font('arial'), str(int(self.clock.get_fps())), 30, self.YELLOW, 30, WINDOW_HEIGHT - 40)
         draw.draw_text(self.screen, pygame.font.match_font('arial'), str(self.board.score), 70, self.BLACK, WINDOW_WIDTH - WINDOW_WIDTH/3 - 40, WINDOW_HEIGHT - WINDOW_HEIGHT/3)
@@ -124,9 +137,16 @@ class Game():
                 self.running = False
                 self.waiting = False
             if ev.type == pygame.KEYDOWN:
-                self.waiting = False
-                self.start = False
-                self.pause = False
+                if ev.key == pygame.K_SPACE:
+                    self.waiting = False
+                    self.start = False
+                    if not self.pause:
+                        pygame.mixer.music.play(-1)
+                    self.pause = False
+                    self.space_up = False
+                    self.esc_up = True
+
+                
 
         self.screen.fill(self.WHITE)
         self.screen.blit(self.image, self.rect)
@@ -135,7 +155,7 @@ class Game():
         draw.draw_text(self.screen, pygame.font.match_font('arial'), str(int(self.clock.get_fps())), 30, self.YELLOW, 30, WINDOW_HEIGHT - 40)
         draw.draw_text(self.screen, pygame.font.match_font('arial'), str(self.board.score), 70, self.BLACK, WINDOW_WIDTH - WINDOW_WIDTH/3 - 40, WINDOW_HEIGHT - WINDOW_HEIGHT/3)
         draw.draw_next_tetrimino(self.screen, self.board, self.assets)
-        
+        draw.draw_held_tetrimino(self.screen, self.board, self.assets)
         if self.start:
             draw.draw_start_screen(self.screen, self.assets)
         elif self.pause:
@@ -143,6 +163,7 @@ class Game():
         elif not self.game_cont:
             draw.draw_game_over_screen(self.screen, self.assets)
         pygame.display.flip()
+        
 
     def blinking_lines(self):
         blinks = 0
@@ -156,6 +177,7 @@ class Game():
                 if ev.type == pygame.KEYDOWN:
                     if ev.key == pygame.K_ESCAPE:
                         self.waiting = True
+                        self.esc_up = False
 
             now = pygame.time.get_ticks()
             if now - self.last_update > 75:
@@ -174,6 +196,7 @@ class Game():
             draw.draw_text(self.screen, pygame.font.match_font('arial'), str(self.board.score), 70, self.BLACK, WINDOW_WIDTH - WINDOW_WIDTH/3 - 40, WINDOW_HEIGHT - WINDOW_HEIGHT/3)
             draw.draw_board(self.screen, self.board, self.assets)
             draw.draw_next_tetrimino(self.screen, self.board, self.assets)
+            draw.draw_held_tetrimino(self.screen, self.board, self.assets)
             pygame.display.flip()
             
         for row in self.board.rows_cleared_number:

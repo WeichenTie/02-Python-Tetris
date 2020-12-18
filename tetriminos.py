@@ -36,6 +36,7 @@ class Tetrimino_T():
         board.has_piece = False
 
     def rotate_ccw(self, board):
+        orig_orientation = self.orientation
         if self.orientation % 4 == 0:
             self.orientation += 1 if self.orientation_0(board, True) else 0
         elif self.orientation % 4 == 1:
@@ -44,6 +45,7 @@ class Tetrimino_T():
             self.orientation += 1 if self.orientation_2(board, True) else 0
         elif self.orientation % 4 == 3:
             self.orientation += 1 if self.orientation_3(board, True) else 0
+        return True if orig_orientation != self.orientation else False
 
     def orientation_0(self, board, clockwise):
         old_pos = self.position.copy()
@@ -97,13 +99,12 @@ class Tetrimino_O():
             board.board[co_ords[0]][co_ords[1]][0]= 2
 
     def stop_tetrimino(self, board):
-        
         for co_ords in self.position:
            board.board[co_ords[0]][co_ords[1]][1] = True
         board.has_piece = False
 
     def rotate_ccw(self, board):
-        pass
+        return True
 
 class Tetrimino_Z():
     orig_pos = [[4,3], [4,4], [5,4], [5,5]]
@@ -121,11 +122,12 @@ class Tetrimino_Z():
         board.has_piece = False
 
     def rotate_ccw(self, board):
+        orig_orientation = self.orientation
         if self.orientation % 2 == 0:
             self.orientation += 1 if self.orientation_0(board, True) else 0
         elif self.orientation % 2 == 1:
             self.orientation += 1 if self.orientation_1(board, True) else 0
-    
+        return True if orig_orientation != self.orientation else False
     def orientation_0(self, board, clockwise):
         old_pos = self.position.copy()
         if clockwise:
@@ -159,17 +161,17 @@ class Tetrimino_S():
             board.board[co_ords[0]][co_ords[1]][0]= 4
 
     def stop_tetrimino(self, board):
-        
         for co_ords in self.position:
            board.board[co_ords[0]][co_ords[1]][1] = True
         board.has_piece = False
 
     def rotate_ccw(self, board):
+        orig_orientation = self.orientation
         if self.orientation % 2 == 0:
             self.orientation += 1 if self.orientation_0(board, True) else 0
         elif self.orientation % 2 == 1:
             self.orientation += 1 if self.orientation_1(board, True) else 0
-
+        return True if orig_orientation != self.orientation else False
     def orientation_0(self, board, clockwise):          
         old_pos = self.position.copy()
         if clockwise:
@@ -209,11 +211,12 @@ class Tetrimino_I():
         board.has_piece = False
 
     def rotate_ccw(self, board):
+        orig_orientation = self.orientation
         if self.orientation % 2 == 0:
             self.orientation += 1 if self.orientation_0(board, True) else 0
         elif self.orientation % 2 == 1:
             self.orientation += 1 if self.orientation_1(board, True) else 0
-
+        return True if orig_orientation != self.orientation else False
     def orientation_0(self, board, clockwise):          
         old_pos = self.position.copy()
         if clockwise:
@@ -244,17 +247,16 @@ class Tetrimino_L():
         board.has_piece = True
         self.orientation = 1
         self.position = [[5,3], [4,3], [4,4], [4,5]]
-        
         for co_ords in self.position:
             board.board[co_ords[0]][co_ords[1]][0] = 6
 
     def stop_tetrimino(self, board):
-        
         for co_ords in self.position:
            board.board[co_ords[0]][co_ords[1]][1] = True
         board.has_piece = False
 
     def rotate_ccw(self, board):
+        orig_orientation = self.orientation
         if self.orientation % 4 == 0:
             self.orientation += 1 if self.orientation_0(board, True) else 0
         elif self.orientation % 4 == 1:
@@ -263,6 +265,7 @@ class Tetrimino_L():
             self.orientation += 1 if self.orientation_2(board, True) else 0
         elif self.orientation % 4 == 3:
             self.orientation += 1 if self.orientation_3(board, True) else 0
+        return True if orig_orientation != self.orientation else False
 
     def orientation_0(self, board, clockwise):          
         old_pos = self.position.copy()
@@ -329,6 +332,7 @@ class Tetrimino_J():
         board.has_piece = False
 
     def rotate_ccw(self, board):
+        orig_orientation = self.orientation
         if self.orientation % 4 == 0:
             self.orientation += 1 if self.orientation_0(board, True) else 0
         elif self.orientation % 4 == 1:
@@ -337,7 +341,7 @@ class Tetrimino_J():
             self.orientation += 1 if self.orientation_2(board, True) else 0
         elif self.orientation % 4 == 3:
             self.orientation += 1 if self.orientation_3(board, True) else 0
-
+        return True if orig_orientation != self.orientation else False
     def orientation_0(self, board, clockwise):          
         old_pos = self.position.copy()
         if clockwise:

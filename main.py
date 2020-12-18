@@ -17,8 +17,7 @@ while game.running:
         game.clock.tick(game.FPS)
         game.waiting_screen()
         game.last_update = pygame.time.get_ticks()
-        game.last_update = pygame.time.get_ticks()
-        game.space_up = True
+    game.space_up = True
     if not game.running:
         break
     if not game.game_cont:

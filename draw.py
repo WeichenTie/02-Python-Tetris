@@ -67,20 +67,30 @@ def draw_block(surface, board, col_offset, row_offset, color, assets):
         surface.blit(assets.debug.image, assets.debug.rect)
 
 def draw_next_tetrimino(surface, board, assets):
-    if board.next_piece == tetriminos.Tetrimino_T:
-        surface.blit(assets.T_next.image, assets.T_next.rect)
-    elif board.next_piece == tetriminos.Tetrimino_O:
-        surface.blit(assets.O_next.image, assets.O_next.rect)
-    elif board.next_piece == tetriminos.Tetrimino_L:
-        surface.blit(assets.L_next.image, assets.L_next.rect)
-    elif board.next_piece == tetriminos.Tetrimino_J:
-        surface.blit(assets.J_next.image, assets.J_next.rect)
-    elif board.next_piece == tetriminos.Tetrimino_S:
-        surface.blit(assets.S_next.image, assets.S_next.rect)
-    elif board.next_piece == tetriminos.Tetrimino_Z:
-        surface.blit(assets.Z_next.image, assets.Z_next.rect)
-    elif board.next_piece == tetriminos.Tetrimino_I:
-        surface.blit(assets.I_next.image, assets.I_next.rect)
+    offset = 0
+    for piece in [board.queued_piece1, board.queued_piece2, board.queued_piece3, board.queued_piece4]:
+        if piece == tetriminos.Tetrimino_T:
+            assets.T_next.rect.midtop = (WINDOW_WIDTH - WINDOW_WIDTH/2.82 - 1, WINDOW_HEIGHT/6 + offset)
+            surface.blit(assets.T_next.image, assets.T_next.rect)
+        elif piece == tetriminos.Tetrimino_O:
+            assets.O_next.rect.midtop = (WINDOW_WIDTH - WINDOW_WIDTH/2.82 - 1, WINDOW_HEIGHT/6 + offset)
+            surface.blit(assets.O_next.image, assets.O_next.rect)
+        elif piece == tetriminos.Tetrimino_L:
+            assets.L_next.rect.midtop = (WINDOW_WIDTH - WINDOW_WIDTH/2.82 - 1, WINDOW_HEIGHT/6 + offset)
+            surface.blit(assets.L_next.image, assets.L_next.rect)
+        elif piece == tetriminos.Tetrimino_J:
+            assets.J_next.rect.midtop = (WINDOW_WIDTH - WINDOW_WIDTH/2.82 - 1, WINDOW_HEIGHT/6 + offset)
+            surface.blit(assets.J_next.image, assets.J_next.rect)
+        elif piece == tetriminos.Tetrimino_S:
+            assets.S_next.rect.midtop = (WINDOW_WIDTH - WINDOW_WIDTH/2.82 - 1, WINDOW_HEIGHT/6 + offset)
+            surface.blit(assets.S_next.image, assets.S_next.rect)
+        elif piece == tetriminos.Tetrimino_Z:
+            assets.Z_next.rect.midtop = (WINDOW_WIDTH - WINDOW_WIDTH/2.82 - 1, WINDOW_HEIGHT/6 + offset)
+            surface.blit(assets.Z_next.image, assets.Z_next.rect)
+        elif piece == tetriminos.Tetrimino_I:
+            assets.I_next.rect.midtop = (WINDOW_WIDTH - WINDOW_WIDTH/2.82 - 2, WINDOW_HEIGHT/6 + offset + 20)
+            surface.blit(assets.I_next.image, assets.I_next.rect)
+        offset += 120
 
 def draw_board_border(surface, assets):
     surface.blit(assets.board_border.image, assets.board_border.rect)
@@ -93,3 +103,26 @@ def draw_start_screen(surface, assets):
 
 def draw_game_over_screen(surface, assets):
     surface.blit(assets.start_screen.image, assets.start_screen.rect)
+
+def draw_held_tetrimino(surface, board, assets):
+    if type(board.held_piece) == tetriminos.Tetrimino_T:
+        assets.T_next.rect.midtop = (WINDOW_WIDTH/3 + 29, WINDOW_HEIGHT/6 + 10)
+        surface.blit(assets.T_next.image, assets.T_next.rect)
+    elif type(board.held_piece) == tetriminos.Tetrimino_O:
+        assets.O_next.rect.midtop = (WINDOW_WIDTH/3 + 29, WINDOW_HEIGHT/6 + 10)
+        surface.blit(assets.O_next.image, assets.O_next.rect)
+    elif type(board.held_piece) == tetriminos.Tetrimino_L:
+        assets.L_next.rect.midtop = (WINDOW_WIDTH/3 + 29, WINDOW_HEIGHT/6 + 10)
+        surface.blit(assets.L_next.image, assets.L_next.rect)
+    elif type(board.held_piece) == tetriminos.Tetrimino_J:
+        assets.J_next.rect.midtop = (WINDOW_WIDTH/3 + 29, WINDOW_HEIGHT/6 + 10)
+        surface.blit(assets.J_next.image, assets.J_next.rect)
+    elif type(board.held_piece) == tetriminos.Tetrimino_S:
+        assets.S_next.rect.midtop = (WINDOW_WIDTH/3 + 29, WINDOW_HEIGHT/6 + 10)
+        surface.blit(assets.S_next.image, assets.S_next.rect)
+    elif type(board.held_piece) == tetriminos.Tetrimino_Z:
+        assets.Z_next.rect.midtop = (WINDOW_WIDTH/3 + 29, WINDOW_HEIGHT/6 + 10)
+        surface.blit(assets.Z_next.image, assets.Z_next.rect)
+    elif type(board.held_piece) == tetriminos.Tetrimino_I:
+        assets.I_next.rect.midtop = (WINDOW_WIDTH/3 + 29, WINDOW_HEIGHT/6 + 30)
+        surface.blit(assets.I_next.image, assets.I_next.rect)
