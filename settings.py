@@ -12,7 +12,7 @@ BLOCK_SIZE = (BLOCK_DIMENSIONS, BLOCK_DIMENSIONS)
 DEFAULT_SPEED = 550
 
 ROOT_FOLDER = ""
-IMG_FOLDER = os.path.join(ROOT_FOLDER, "img")
+IMG_FOLDER = os.path.join(ROOT_FOLDER, os.path.join("img", "Skin2"))
 AUDIO_FOLDER = os.path.join(ROOT_FOLDER, "audio_src")
 
 THEME = os.path.join(AUDIO_FOLDER, "T99Loop.ogg")

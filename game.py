@@ -18,7 +18,7 @@ class Game():
     TRANSPARENT = 0
     OPAQUE = 255
 
-    FPS = 3000
+    FPS = 240
     def __init__(self):
         pygame.init()
         
