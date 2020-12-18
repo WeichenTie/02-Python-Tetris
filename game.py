@@ -21,7 +21,6 @@ class Game():
     FPS = 300
     def __init__(self):
         pygame.init()
-        
         self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         pygame.display.set_caption("Tetris")
         self.image = pygame.image.load(os.path.join(IMG_FOLDER,"background.png")).convert()
@@ -34,6 +33,7 @@ class Game():
         
         self.assets = assets.AllSprites()
         self.audio = assets.AllAudio()
+        pygame.font.init()
 
         self.game_speed = DEFAULT_SPEED
         self.last_update = pygame.time.get_ticks()
@@ -127,8 +127,8 @@ class Game():
         draw.draw_next_tetrimino(self.screen, self.board, self.assets)
         draw.draw_held_tetrimino(self.screen, self.board, self.assets)
         draw.draw_board(self.screen, self.board, self.assets)
-        draw.draw_text(self.screen, pygame.font.match_font('arial'), str(int(self.clock.get_fps())), 30, self.YELLOW, 30, WINDOW_HEIGHT - 40)
-        draw.draw_text(self.screen, pygame.font.match_font('arial'), str(self.board.score), 70, self.BLACK, WINDOW_WIDTH - WINDOW_WIDTH/3 - 40, WINDOW_HEIGHT - WINDOW_HEIGHT/3)
+        draw.draw_text(self.screen, pygame.font.match_font('Vermin Vibes 2 Soft'), str(int(self.clock.get_fps())), 30, self.YELLOW, 30, WINDOW_HEIGHT - 40)
+        draw.draw_text(self.screen, pygame.font.match_font('Vermin Vibes 2 Soft'), str(self.board.score), 70, self.BLACK, WINDOW_WIDTH - WINDOW_WIDTH/3 - 40, WINDOW_HEIGHT - WINDOW_HEIGHT/3)
         pygame.display.flip()
     
     def waiting_screen(self):
@@ -137,7 +137,7 @@ class Game():
                 self.running = False
                 self.waiting = False
             if ev.type == pygame.KEYDOWN:
-                if ev.key == pygame.K_SPACE:
+                if ev.key != pygame.K_ESCAPE:
                     self.waiting = False
                     self.start = False
                     if not self.pause:
@@ -152,8 +152,8 @@ class Game():
         self.screen.blit(self.image, self.rect)
         draw.draw_board_border(self.screen, self.assets)
         draw.draw_board(self.screen, self.board, self.assets)
-        draw.draw_text(self.screen, pygame.font.match_font('arial'), str(int(self.clock.get_fps())), 30, self.YELLOW, 30, WINDOW_HEIGHT - 40)
-        draw.draw_text(self.screen, pygame.font.match_font('arial'), str(self.board.score), 70, self.BLACK, WINDOW_WIDTH - WINDOW_WIDTH/3 - 40, WINDOW_HEIGHT - WINDOW_HEIGHT/3)
+        draw.draw_text(self.screen, pygame.font.match_font('Vermin Vibes 2 Soft'), str(int(self.clock.get_fps())), 30, self.YELLOW, 30, WINDOW_HEIGHT - 40)
+        draw.draw_text(self.screen, pygame.font.match_font('Vermin Vibes 2 Soft'), str(self.board.score), 70, self.BLACK, WINDOW_WIDTH - WINDOW_WIDTH/3 - 40, WINDOW_HEIGHT - WINDOW_HEIGHT/3)
         draw.draw_next_tetrimino(self.screen, self.board, self.assets)
         draw.draw_held_tetrimino(self.screen, self.board, self.assets)
         if self.start:
@@ -192,8 +192,8 @@ class Game():
             self.screen.fill(self.WHITE)
             self.screen.blit(self.image, self.rect)
             draw.draw_board_border(self.screen, self.assets)
-            draw.draw_text(self.screen, pygame.font.match_font('arial'), str(int(self.clock.get_fps())), 30, self.YELLOW, 30, WINDOW_HEIGHT - 40)
-            draw.draw_text(self.screen, pygame.font.match_font('arial'), str(self.board.score), 70, self.BLACK, WINDOW_WIDTH - WINDOW_WIDTH/3 - 40, WINDOW_HEIGHT - WINDOW_HEIGHT/3)
+            draw.draw_text(self.screen, pygame.font.match_font('Vermin Vibes 2 Soft'), str(int(self.clock.get_fps())), 30, self.YELLOW, 30, WINDOW_HEIGHT - 40)
+            draw.draw_text(self.screen, pygame.font.match_font('Vermin Vibes 2 Soft'), str(self.board.score), 70, self.BLACK, WINDOW_WIDTH - WINDOW_WIDTH/3 - 40, WINDOW_HEIGHT - WINDOW_HEIGHT/3)
             draw.draw_board(self.screen, self.board, self.assets)
             draw.draw_next_tetrimino(self.screen, self.board, self.assets)
             draw.draw_held_tetrimino(self.screen, self.board, self.assets)
